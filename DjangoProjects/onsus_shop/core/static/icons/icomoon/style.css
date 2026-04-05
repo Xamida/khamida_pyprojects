@@ -1,0 +1,250 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon9907.eot?amwch6');
+  src:  url('fonts/icomoon9907.eot?amwch6#iefix') format('embedded-opentype'),
+    url('fonts/icomoon9907.ttf?amwch6') format('truetype'),
+    url('fonts/icomoon9907.woff?amwch6') format('woff'),
+    url('fonts/icomoon9907.svg?amwch6#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-right1:before {
+  content: "\e93d";
+}
+.icon-sidebar:before {
+  content: "\e928";
+}
+.icon-x:before {
+  content: "\e943";
+}
+.icon-compare1:before {
+  content: "\e956";
+}
+.icon-heart2:before {
+  content: "\e957";
+}
+.icon-view:before {
+  content: "\e958";
+}
+.icon-cart2:before {
+  content: "\e959";
+}
+.icon-trash:before {
+  content: "\e975";
+}
+.icon-close:before {
+  content: "\e91d";
+}
+.icon-user-3:before {
+  content: "\e944";
+  color: #73787d;
+}
+.icon-user-21:before {
+  content: "\e942";
+}
+.icon-list-2:before {
+  content: "\e93e";
+}
+.icon-list-1:before {
+  content: "\e93f";
+}
+.icon-dot-line:before {
+  content: "\e940";
+}
+.icon-sort:before {
+  content: "\e941";
+}
+.icon-circle-chevron-right:before {
+  content: "\e939";
+}
+.icon-shop-cart-2:before {
+  content: "\e93a";
+}
+.icon-shop-cart-1:before {
+  content: "\e93b";
+}
+.icon-shop-cart-3:before {
+  content: "\e93c";
+}
+.icon-quote:before {
+  content: "\e938";
+}
+.icon-minus:before {
+  content: "\e937";
+}
+.icon-cart-2:before {
+  content: "\e933";
+}
+.icon-check:before {
+  content: "\e934";
+}
+.icon-plus:before {
+  content: "\e935";
+}
+.icon-star:before {
+  content: "\e936";
+}
+.icon-check-3:before {
+  content: "\e91e";
+}
+.icon-delivery-2:before {
+  content: "\e91f";
+}
+.icon-headphone-2:before {
+  content: "\e920";
+}
+.icon-hearth:before {
+  content: "\e921";
+}
+.icon-jewelry:before {
+  content: "\e922";
+}
+.icon-machine:before {
+  content: "\e923";
+}
+.icon-payment:before {
+  content: "\e924";
+}
+.icon-reliable:before {
+  content: "\e925";
+}
+.icon-sofa:before {
+  content: "\e926";
+}
+.icon-support-2:before {
+  content: "\e927";
+}
+.icon-tool:before {
+  content: "\e929";
+}
+.icon-user-2:before {
+  content: "\e92a";
+}
+.icon-arrow-right-circle:before {
+  content: "\e92b";
+}
+.icon-automative:before {
+  content: "\e92c";
+}
+.icon-beauti:before {
+  content: "\e92d";
+}
+.icon-best-seller:before {
+  content: "\e92e";
+}
+.icon-clothing:before {
+  content: "\e92f";
+}
+.icon-compare:before {
+  content: "\e930";
+}
+.icon-computer:before {
+  content: "\e931";
+}
+.icon-computer-wifi:before {
+  content: "\e932";
+}
+.icon-menu-dots:before {
+  content: "\e91c";
+}
+.icon-facebook-2:before {
+  content: "\e91a";
+}
+.icon-google:before {
+  content: "\e91b";
+}
+.icon-folder:before {
+  content: "\e900";
+}
+.icon-arrow-left-lg:before {
+  content: "\e901";
+}
+.icon-fire:before {
+  content: "\e902";
+}
+.icon-arrow-right-lg:before {
+  content: "\e903";
+}
+.icon-budget:before {
+  content: "\e904";
+}
+.icon-cart:before {
+  content: "\e905";
+}
+.icon-clock:before {
+  content: "\e906";
+}
+.icon-check-2:before {
+  content: "\e907";
+}
+.icon-delivery:before {
+  content: "\e908";
+}
+.icon-direction:before {
+  content: "\e909";
+}
+.icon-facebook:before {
+  content: "\e90a";
+}
+.icon-global:before {
+  content: "\e90b";
+}
+.icon-headphone:before {
+  content: "\e90c";
+}
+.icon-instagram:before {
+  content: "\e90d";
+}
+.icon-linkin:before {
+  content: "\e90e";
+}
+.icon-location:before {
+  content: "\e90f";
+}
+.icon-money-bag:before {
+  content: "\e910";
+}
+.icon-phone:before {
+  content: "\e911";
+}
+.icon-search:before {
+  content: "\e912";
+}
+.icon-shield:before {
+  content: "\e913";
+}
+.icon-twitter:before {
+  content: "\e914";
+}
+.icon-user:before {
+  content: "\e915";
+}
+.icon-whatapp:before {
+  content: "\e916";
+}
+.icon-accept:before {
+  content: "\e917";
+}
+.icon-arrow-down:before {
+  content: "\e918";
+}
+.icon-arrow-right:before {
+  content: "\e919";
+}

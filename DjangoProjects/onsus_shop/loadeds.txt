@@ -1,0 +1,7 @@
+django-admin
+Pilow
+Sqllite
+dotenv
+allauth
+jwt
+urllib3
