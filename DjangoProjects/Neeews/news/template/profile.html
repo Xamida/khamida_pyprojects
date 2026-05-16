@@ -1,0 +1,422 @@
+<!-- ...existing code... -->
+<!doctype html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Foydalanuvchi sahifasi — UZNews</title>
+    <style>
+        :root{
+            --bg:#f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#1f7fff;
+            --danger:#8F1A00; --glass: rgba(255,255,255,0.6);
+            --radius:12px;
+            --shadow: 0 6px 20px rgba(16,24,40,0.08);
+            --max-width:1100px;
+            --gap:18px;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background:var(--bg); color:#111827; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+            padding:24px; display:flex; justify-content:center;
+        }
+
+        .container{
+            width:100%; max-width:var(--max-width);
+            display:grid; grid-template-columns:320px 1fr; gap:var(--gap);
+        }
+
+        header.appbar{
+            position:fixed; left:0; right:0; top:0; display:flex; align-items:center; gap:12px;
+            padding:12px 24px; background:linear-gradient(to right, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+            backdrop-filter: blur(6px); box-shadow:0 1px 0 rgba(16,24,40,0.04);
+        }
+        .brand{font-weight:700; color:var(--accent); letter-spacing:.2px}
+        .appbar nav{margin-left:16px; display:flex; gap:12px; align-items:center}
+        .appbar a{color:var(--muted); text-decoration:none; font-size:14px}
+        .appbar .search{margin-left:auto; display:flex; gap:8px; align-items:center}
+        .search input{
+            padding:8px 12px; border-radius:999px; border:1px solid rgba(15,23,42,0.06); background:white;
+            width:220px; font-size:13px;
+        }
+
+        main.wrapper{margin-top:72px; width:100%}
+
+        /* Left column - profile card */
+        .card{
+            background:var(--card); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
+        }
+        .profile{
+            display:flex; gap:14px; align-items:center;
+        }
+        .avatar{
+            width:84px; height:84px; border-radius:20px; overflow:hidden; flex-shrink:0;
+            background:linear-gradient(135deg,#eef2ff,#fce7f3); display:flex; align-items:center; justify-content:center;
+            font-weight:700; color:var(--accent); font-size:28px;
+        }
+        .meta h2{margin:0; font-size:20px}
+        .meta p{margin:4px 0 0; color:var(--muted); font-size:13px}
+        .actions{margin-top:14px; display:flex; gap:8px}
+        .btn{
+            padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-size:13px;
+            background:var(--accent); color:white;
+        }
+        .btn.ghost{background:transparent; border:1px solid rgba(15,23,42,0.06); color:var(--muted)}
+        .stats{display:flex; gap:12px; margin-top:12px; color:var(--muted); font-size:13px}
+
+        /* Right column content */
+        .panel{margin-bottom:var(--gap); display:block}
+        h3{margin:0 0 12px 0; font-size:16px}
+        .article{
+            display:flex; gap:12px; padding:12px; border-radius:10px; background:linear-gradient(180deg,#fff,#fbfdff);
+            border:1px solid rgba(15,23,42,0.03)
+        }
+        .thumb{width:120px; height:72px; border-radius:8px; background:#e6eefc; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted)}
+        .article .content{flex:1}
+        .article h4{margin:0; font-size:15px}
+        .meta-row{display:flex; gap:8px; color:var(--muted); font-size:13px; margin-top:6px; align-items:center}
+        .pill{padding:6px 8px; background:#f3f4f6; border-radius:999px; font-size:12px}
+
+        /* forms & preferences */
+        .form-group{display:flex; flex-direction:column; gap:6px; margin-bottom:10px}
+        label{font-size:13px; color:var(--muted)}
+        input[type="text"], input[type="url"], input[type="password"], textarea, select{
+            padding:10px; border-radius:8px; border:1px solid rgba(15,23,42,0.06); font-size:14px;
+            background:white;
+        }
+        textarea{min-height:80px; resize:vertical}
+        .pref-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+        .muted-note{font-size:13px; color:var(--muted)}
+
+        /* footer small */
+        .small{font-size:13px; color:var(--muted)}
+
+        /* responsive */
+        @media (max-width:880px){
+            .container{grid-template-columns:1fr; padding:0 8px}
+            .search input{width:120px}
+        }
+        /* dark mode toggle styles */
+        .theme-dark{
+            --bg:#0b1220; --card:#071226; --muted:#9aa4b2; --accent:#66b0ff; color:#e6eef8;
+            background:linear-gradient(180deg,#06070a,#0b1220);
+        }
+    </style>
+</head>
+<body>
+    <header class="appbar" role="banner" aria-label="Top navigation">
+        <div class="brand">UZNews</div>
+        <nav aria-label="Main">
+            <a href="#" title="Home">Home</a>
+            <a href="#" title="Sections">Sections</a>
+            <a href="#" title="Saved">Saved</a>
+            <a href="#" title="Profile">Profile</a>
+        </nav>
+        <div class="search" role="search">
+            <input id="q" placeholder="Search news..." aria-label="Search news" />
+        </div>
+    </header>
+
+    <main class="wrapper" role="main">
+        <div class="container" id="page">
+            <!-- Left column -->
+            <aside>
+                <div class="card">
+                    <div class="profile">
+                        <div id="avatar" class="avatar" aria-hidden="true">JD</div>
+                        <div class="meta">
+                            <h2 id="displayName">Jane Doe</h2>
+                            <p id="userBio">Avid reader, freelance reporter, coffee lover. Covers tech and culture.</p>
+                            <div class="actions">
+                                <button id="editBtn" class="btn ghost">Edit profile</button>
+                                <button id="followBtn" class="btn">Follow</button>
+                            </div>
+                            <div class="stats" aria-hidden="true">
+                                <div><strong id="articlesCount">0</strong> articles</div>
+                                <div><strong id="followersCount">1.2k</strong> followers</div>
+                                <div><strong id="followingCount">180</strong> following</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="border:none;border-top:1px solid rgba(15,23,42,0.04); margin:14px 0">
+
+                    <div class="small">
+                        <div><strong>Member since</strong> <span id="memberSince">Mar 2021</span></div>
+                        <div style="margin-top:8px" class="muted-note">This is your public profile. Visitors will see your name, bio and saved articles.</div>
+                    </div>
+                </div>
+
+                <div style="height:var(--gap)"></div>
+
+                <div class="card">
+                    <h3>Account</h3>
+                    <div class="small" style="margin-top:8px">
+                        <div style="margin-bottom:8px"><strong>Email</strong><div class="muted-note" id="email">jane.doe@example.com</div></div>
+                        <button id="signOut" class="btn ghost" style="width:100%">Sign out</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right column -->
+            <section>
+                <!-- Saved articles panel removed -->
+
+                <div class="panel card">
+                    <h3>Reading preferences</h3>
+                    <div class="pref-grid">
+                        <div>
+                            <div class="form-group">
+                                <label for="themeToggle">Theme</label>
+                                <select id="themeToggle" aria-label="Theme">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fontSize">Font size</label>
+                                <input id="fontSize" type="range" min="14" max="20" value="16" />
+                                <div class="muted-note">Preview size: <span id="fontSample">16px</span></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="form-group">
+                                <label for="articleDensity">Article density</label>
+                                <select id="articleDensity">
+                                    <option value="comfortable">Comfortable</option>
+                                    <option value="compact">Compact</option>
+                                    <option value="spacious">Spacious</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Newsletter</label>
+                                <div style="display:flex; gap:8px;">
+                                    <button id="subscribeBtn" class="btn">Manage subscription</button>
+                                    <div style="align-self:center" id="subStatus" class="muted-note">Active</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel card" id="accountPanel">
+                    <h3>Profile & Account</h3>
+
+                    <div id="editForm" style="display:none; margin-top:8px">
+                        <div class="form-group">
+                            <label for="nameInput">Full name</label>
+                            <input id="nameInput" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label for="bioInput">Bio</label>
+                            <textarea id="bioInput"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="websiteInput">Website</label>
+                            <input id="websiteInput" type="url" />
+                        </div>
+                        <div class="form-group">
+                            <label for="avatarInput">Avatar (PNG/JPG)</label>
+                            <input id="avatarInput" type="file" accept="image/*" />
+                            <div class="muted-note">Choose an image to personalize your profile.</div>
+                        </div>
+                        <div style="display:flex; gap:8px; margin-top:8px">
+                            <button id="saveProfile" class="btn">Save</button>
+                            <button id="cancelEdit" class="btn ghost">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div id="security" style="margin-top:12px">
+                        <h4 style="font-size:14px; margin:0 0 8px 0">Security</h4>
+                        <div class="form-group">
+                            <label for="currentPassword">Current password</label>
+                            <input id="currentPassword" type="password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New password</label>
+                            <input id="newPassword" type="password" />
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button id="changePass" class="btn">Change password</button>
+                            <button id="deleteAccount" class="btn ghost" style="color:var(--danger); border-color:rgba(224,36,36,0.08)">Delete account</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Simple demo data + localStorage persistence (saved articles removed)
+        const defaults = {
+            name: "Jane Doe",
+            bio: "Avid reader, freelance reporter, coffee lover. Covers tech and culture.",
+            email: "jane.doe@example.com",
+            memberSince: "Mar 2021",
+            avatarInitials: "JD",
+            theme: "light",
+            fontSize: 16,
+            subscription: {status:"Active"}
+        };
+
+        function loadState(){
+            const raw = localStorage.getItem('uznews_profile');
+            return raw ? JSON.parse(raw) : defaults;
+        }
+        function saveState(state){
+            localStorage.setItem('uznews_profile', JSON.stringify(state));
+        }
+
+        let state = loadState();
+
+        // UI refs
+        const displayName = document.getElementById('displayName');
+        const userBio = document.getElementById('userBio');
+        const emailEl = document.getElementById('email');
+        const memberSince = document.getElementById('memberSince');
+        const avatarEl = document.getElementById('avatar');
+        const editBtn = document.getElementById('editBtn');
+        const editForm = document.getElementById('editForm');
+        const nameInput = document.getElementById('nameInput');
+        const bioInput = document.getElementById('bioInput');
+        const websiteInput = document.getElementById('websiteInput');
+        const avatarInput = document.getElementById('avatarInput');
+        const saveProfile = document.getElementById('saveProfile');
+        const cancelEdit = document.getElementById('cancelEdit');
+        const themeToggle = document.getElementById('themeToggle');
+        const fontSize = document.getElementById('fontSize');
+        const fontSample = document.getElementById('fontSample');
+        const subscribeBtn = document.getElementById('subscribeBtn');
+        const subStatus = document.getElementById('subStatus');
+        const followBtn = document.getElementById('followBtn');
+        const signOut = document.getElementById('signOut');
+        const changePass = document.getElementById('changePass');
+        const deleteAccount = document.getElementById('deleteAccount');
+        const q = document.getElementById('q');
+
+        // Render functions
+        function renderProfile(){
+            displayName.textContent = state.name;
+            userBio.textContent = state.bio;
+            emailEl.textContent = state.email;
+            memberSince.textContent = state.memberSince;
+            avatarEl.textContent = state.name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+            // articlesCount kept static in markup; saved articles removed
+            // preferences UI
+            themeToggle.value = state.theme || 'light';
+            fontSize.value = state.fontSize || 16;
+            fontSample.textContent = (state.fontSize || 16) + 'px';
+            subStatus.textContent = state.subscription.status || "Inactive";
+            // theme
+            document.documentElement.classList.toggle('theme-dark', state.theme === 'dark');
+            document.body.style.fontSize = (state.fontSize || 16) + 'px';
+        }
+
+        // Utilities
+        function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+
+        // Events
+        editBtn.addEventListener('click', ()=>{
+            // show form and populate
+            editForm.style.display = 'block';
+            nameInput.value = state.name;
+            bioInput.value = state.bio;
+            websiteInput.value = state.website || '';
+            avatarInput.value = '';
+            nameInput.focus();
+        });
+        cancelEdit.addEventListener('click', ()=>{
+            editForm.style.display = 'none';
+        });
+        saveProfile.addEventListener('click', ()=>{
+            state.name = nameInput.value.trim() || state.name;
+            state.bio = bioInput.value.trim() || '';
+            state.website = websiteInput.value.trim() || '';
+            // avatar file preview stored as dataURL
+            const file = avatarInput.files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onload = ()=>{ state.avatarData = reader.result; saveState(state); renderProfile(); editForm.style.display='none'; };
+                reader.readAsDataURL(file);
+            } else {
+                saveState(state);
+                renderProfile();
+                editForm.style.display='none';
+            }
+        });
+
+        themeToggle.addEventListener('change', (e)=>{
+            state.theme = e.target.value;
+            saveState(state);
+            renderProfile();
+        });
+        fontSize.addEventListener('input', (e)=>{
+            state.fontSize = Number(e.target.value);
+            fontSample.textContent = state.fontSize + 'px';
+            document.body.style.fontSize = state.fontSize + 'px';
+            saveState(state);
+        });
+
+        subscribeBtn.addEventListener('click', ()=>{
+            if(state.subscription.status === 'Active'){
+                if(confirm('Unsubscribe from newsletter?')) state.subscription.status = 'Inactive';
+            } else {
+                state.subscription.status = 'Active';
+            }
+            saveState(state);
+            renderProfile();
+        });
+
+        followBtn.addEventListener('click', ()=>{
+            if(followBtn.textContent === 'Follow'){
+                followBtn.textContent = 'Following'; followBtn.classList.remove('btn'); followBtn.classList.add('btn'); // style kept simple
+            } else {
+                followBtn.textContent = 'Follow';
+            }
+        });
+
+        signOut.addEventListener('click', ()=>{
+            alert('Signed out (demo).');
+        });
+
+        changePass.addEventListener('click', ()=>{
+            const cur = document.getElementById('currentPassword').value;
+            const nw = document.getElementById('newPassword').value;
+            if(!cur || !nw){ alert('Please fill both password fields (demo).'); return; }
+            if(nw.length < 8){ alert('New password must be at least 8 characters.'); return; }
+            alert('Password changed (demo).');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+        });
+
+        deleteAccount.addEventListener('click', ()=>{
+            if(confirm('This will delete your local demo profile. Continue?')){
+                localStorage.removeItem('uznews_profile');
+                state = loadState();
+                renderProfile();
+                alert('Account deleted locally (demo).');
+            }
+        });
+
+        q.addEventListener('keydown', (e)=>{
+            if(e.key === 'Enter') alert('Search for: ' + q.value + ' (demo)');
+        });
+
+        // initial render
+        renderProfile();
+
+        // ensure accessible focus management
+        document.addEventListener('keyup', (e)=>{
+            if(e.key === 'Escape'){
+                editForm.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+<!-- ...existing code... -->

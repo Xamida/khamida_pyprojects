@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UZNews</title>
+    <meta name="author" content="X & M">
+    <meta name="description" content="UZNews - Yangiliklar va Maqolalar sayti">
+    <meta name="keywords"
+        content="news, newspaper, magazine, blog, post, article, editorial, publishing, modern, responsive, html5, template">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700">
+    <link rel="stylesheet" href="{% static 'cstaticss/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-stars-o.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors/theme-color-1.css' %}" id="changeColorScheme">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+
+<body>
+    <div id="preloader">
+        <div class="preloader bg--color-1--b" data-preloader="1">
+            <div class="preloader--inner"></div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <header class="header--section header--style-1">
+            <div class="header--topbar bg--color-2">
+                <div class="container">
+                    <div class="float--left float--xs-none text-xs-center">
+                        <ul class="header--topbar-info nav">
+                            <li><i class="fa fm fa-map-marker"></i>Tashkent</li>
+                        </ul>
+                    </div>
+                    <div class="float--right float--xs-none text-xs-center">
+                        {% if request.user.is_authenticated %}
+                            <ul class="header--topbar-action nav">
+                                <li><a href="{% url 'profile' %}">
+                                    <i class="fa fm fa-user-o"></i>
+                                    {% firstof request.user.get_full_name request.user.email request.user.username %}</a>
+                                </li>
+                            </ul>
+                        {% else %}
+                            <ul class="header--topbar-action nav">
+                                <li><a href="{% url 'login' %}">
+                                    <i class="fa fm fa-user-o"></i>
+                                    Login/Register</a>
+                                </li>
+                            </ul>
+                        {% endif %}
+                        <ul class="header--topbar-lang nav">
+                            <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                        class="fa fm fa-language"></i>English<i class="fa flm fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">Uzbek</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="header--topbar-social nav hidden-sm hidden-xxs">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="header--navbar navbar bd--color-1 bg--color-1" data-trigger="sticky">
+                <div class="container">
+                    <div class="navbar-header"> <button type="button" class="navbar-toggle collapsed"
+                            data-toggle="collapse" data-target="#headerNav" aria-expanded="false"
+                            aria-controls="headerNav"> <span class="sr-only">Toggle Navigation</span> <span
+                                class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                        </button> </div>
+                    <div id="headerNav" class="navbar-collapse collapse float--left">
+                        <ul class="header--menu-links nav navbar-nav" data-trigger="hoverIntent">
+                            <li class="dropdown"> <a href="{% url 'home' %}" class="dropdown-toggle" data-toggle="dropdown">Home</a>
+                            </li>
+                            {% for cat in categories|slice:":5" %}
+                                <li class="dropdown megamenu">
+                                    <a href="{% url 'news_list_category' category_slug=cat.slug %}" class="dropdown-toggle" data-toggle="dropdown">
+                                        <span>{{ cat.text }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <form method="get" action="{% url 'news_list' %}" class="header--search-form float--right" data-form="validate">
+                        <input type="text" name="q" placeholder="Search..." class="header--search-control form-control" required>
+
+                        <button type="submit" class="header--search-btn btn">
+                            <i class="header--search-icon fa fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </header>
+        <div class="posts--filter-bar style--1 hidden-xs">
+            <div class="container">
+                <ul class="nav">
+                    <li> <a href="{% url 'featured_news' %}"> <i class="fa fa-star-o"></i> <span>Featured News</span> </a> </li>
+                    <li> <a href="{% url 'popular_news' %}"> <i class="fa fa-heart-o"></i> <span>Most Popular</span> </a> </li>
+                    <li> <a href="{% url 'hot_news' %}"> <i class="fa fa-fire"></i> <span>Hot News</span> </a> </li>
+                    <li> <a href="{% url 'trending_news' %}"> <i class="fa fa-flash"></i> <span>Trending News</span> </a> </li>
+                    <li> <a href="{% url 'most_watched_news' %}"> <i class="fa fa-eye"></i> <span>Most Watched</span> </a> </li>
+                </ul>
+            </div>
+        </div>
+        <div class="news--ticker">
+            <div class="container">
+                <div class="title">
+                    <h2>News Updates</h2> <span></span>
+                </div>
+                <div class="news-updates--list" data-marquee="true">
+                    <ul class="nav">
+                        <li>
+                            <h3 class="h3"><a href="#">Contrary to popular belief Lorem Ipsum is not simply random
+                                    text.</a></h3>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="main--breadcrumb">
+            <div class="container">
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'home' %}" class="btn-link"><i class="fa fm fa-home"></i>Home</a></li>
+                    <li class="active"><span>...</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content--section pbottom--30">
+            <div class="container">
+                <div class="row">
+                    <div class="main--content col-md-8 col-sm-7" data-sticky-content="true">
+                        <div class="sticky-content-inner">
+                            <div class="post--items post--items-2 pd--30-0">
+                                <ul class="nav row AdjustRow">
+                                {% for item in news %}
+                                    <li class="col-md-6 col-sm-12 col-xs-6 col-xss-12">
+                                        <div class="post--item post--layout-1 post--title-large">
+                                            <div class="post--img"> <a href="{% url 'news' item.slug %}" class="thumb"><img
+                                                        src="{{ item.image.url }}" alt=""></a>
+                                                <a href="#"
+                                                    class="cat">{{ item.category.text }}
+                                                </a>
+                                                <div class="post--info">
+                                                    <ul class="nav meta">
+                                                        <li><a href="#">{{ item.author_name }}</a></li>
+                                                        <li><a href="#">{{ item.date }}</a></li>
+                                                    </ul>
+                                                    <div class="title">
+                                                        <h2 class="h4"><a href="{% url 'news' item.slug %}"
+                                                                class="btn-link">{{ item.title }}</a></h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="post--content">
+                                                <p>{{ item.short_description }}</p>
+                                            </div>
+                                            <div class="post--action"> <a href="{% url 'news' item.slug %}">Continue
+                                                    Reading...</a> </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="pagination--wrapper clearfix bdtop--1 bd--color-2 ptop--60 pbottom--30">
+                                <p class="pagination-hint float--left">Page 02 of 03</p>
+                                <ul class="pagination float--right">
+                                    <li><a href="#"><i class="fa fa-long-arrow-left"></i></a></li>
+                                    <li><a href="#">01</a></li>
+                                    <li class="active"><span>02</span></li>
+                                    <li><a href="#">03</a></li>
+                                    <li> <i class="fa fa-angle-double-right"></i> <i
+                                            class="fa fa-angle-double-right"></i> <i
+                                            class="fa fa-angle-double-right"></i> </li>
+                                    <li><a href="#">20</a></li>
+                                    <li><a href="#"><i class="fa fa-long-arrow-right"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
+                        <div class="sticky-content-inner">
+                            <div class="widget">
+                                <div class="search--widget">
+                                    <form action="#" data-form="validate">
+                                        <div class="input-group"> <input type="search" name="search"
+                                                placeholder="Search..." class="form-control" required>
+                                            <div class="input-group-btn"> <button type="submit" class="btn-link"><i
+                                                        class="fa fa-search"></i></button> </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">Categories</h2> <i class="icon fa fa-folder-open-o"></i>
+                                </div>
+                                <div class="nav--widget">
+                                    <ul class="nav">
+                                        {% for cat in categories %}
+                                            <li><a href="{% url 'news_list_category' category_slug=cat.slug %}"><span>{{ cat.text }}</span><span>(click)</span></a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">Get Newsletter</h2> <i class="icon fa fa-envelope-open-o"></i>
+                                </div>
+                                <div class="subscribe--widget">
+                                    <div class="content">
+                                        <p>Subscribe to our newsletter to get latest news, popular news and exclusive
+                                            updates.</p>
+                                    </div>
+                                    <form
+                                        action="https://themelooks.us13.list-manage.com/subscribe/post?u=79f0b132ec25ee223bb41835f&amp;id=f4e0e93d1d"
+                                        method="post" name="mc-embedded-subscribe-form" target="_blank"
+                                        data-form="mailchimpAjax">
+                                        <div class="input-group"> <input type="email" name="EMAIL"
+                                                placeholder="E-mail address" class="form-control" autocomplete="off"
+                                                required>
+                                            <div class="input-group-btn"> <button type="submit"
+                                                    class="btn btn-lg btn-default active"><i
+                                                        class="fa fa-paper-plane-o"></i></button> </div>
+                                        </div>
+                                        <div class="status"></div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">Featured News</h2> <i class="icon fa fa-newspaper-o"></i>
+                                </div>
+                                <div class="list--widget list--widget-1">
+                                    <div class="list--widget-nav" data-ajax="tab">
+                                        <ul class="nav nav-justified">
+                                            <li> <a href="#" data-ajax-action="load_widget_hot_news">Hot News</a> </li>
+                                            <li class="active"> <a href="#"
+                                                    data-ajax-action="load_widget_trendy_news">Trendy News</a> </li>
+                                            <li> <a href="#" data-ajax-action="load_widget_most_watched">Most
+                                                    Watched</a> </li>
+                                        </ul>
+                                    </div>
+                                    <div class="post--items post--items-3" data-ajax-content="outer">
+                                        <ul class="nav" data-ajax-content="inner">
+                                            <li>
+                                                <div class="post--item post--layout-3">
+                                                    <div class="post--img"> <a href="#" class="thumb"><img
+                                                                src="{% static 'img/widgets-img/news-widget-01.jpg' %}" alt=""></a>
+                                                        <div class="post--info">
+                                                            <ul class="nav meta">
+                                                                <li><a href="#">Ninurta</a></li>
+                                                                <li><a href="#">16 April 2017</a></li>
+                                                            </ul>
+                                                            <div class="title">
+                                                                <h3 class="h4"><a href="#" class="btn-link">Long
+                                                                        established fact that a reader will be
+                                                                        distracted</a></h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="post--item post--layout-3">
+                                                    <div class="post--img"> <a href="#" class="thumb"><img
+                                                                src="{% static 'img/widgets-img/news-widget-02.jpg' %}" alt=""></a>
+                                                        <div class="post--info">
+                                                            <ul class="nav meta">
+                                                                <li><a href="#">Orcus</a></li>
+                                                                <li><a href="#">16 April 2017</a></li>
+                                                            </ul>
+                                                            <div class="title">
+                                                                <h3 class="h4"><a href="#" class="btn-link">Long
+                                                                        established fact that a reader will be
+                                                                        distracted</a></h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="post--item post--layout-3">
+                                                    <div class="post--img"> <a href="#" class="thumb"><img
+                                                                src="{% static 'img/widgets-img/news-widget-03.jpg' %}" alt=""></a>
+                                                        <div class="post--info">
+                                                            <ul class="nav meta">
+                                                                <li><a href="#">Rahab</a></li>
+                                                                <li><a href="#">16 April 2017</a></li>
+                                                            </ul>
+                                                            <div class="title">
+                                                                <h3 class="h4"><a href="#" class="btn-link">Long
+                                                                        established fact that a reader will be
+                                                                        distracted</a></h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="post--item post--layout-3">
+                                                    <div class="post--img"> <a href="#" class="thumb"><img
+                                                                src="{% static 'img/widgets-img/news-widget-04.jpg' %}" alt=""></a>
+                                                        <div class="post--info">
+                                                            <ul class="nav meta">
+                                                                <li><a href="#">Tannin</a></li>
+                                                                <li><a href="#">16 April 2017</a></li>
+                                                            </ul>
+                                                            <div class="title">
+                                                                <h3 class="h4"><a href="#" class="btn-link">Long
+                                                                        established fact that a reader will be
+                                                                        distracted</a></h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="preloader bg--color-0--b" data-preloader="1">
+                                            <div class="preloader--inner"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer--section">
+            <div class="footer--widgets pd--30-0 bg--color-2">
+                <div class="container">
+                    <div class="row AdjustRow">
+                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">About Us</h2> <i class="icon fa fa-exclamation"></i>
+                                </div>
+                                <div class="about--widget">
+                                    <div class="content">
+                                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
+                                            praesentium laborum et dolorum fuga.</p>
+                                    </div>
+                                    <div class="action"> <a href="#" class="btn-link">Read More<i
+                                                class="fa flm fa-angle-double-right"></i></a> </div>
+                                    <ul class="nav">
+                                        <li> <i class="fa fa-map"></i> <span>143/C, Fake Street, Melborne,
+                                                Australia</span> </li>
+                                        <li> <i class="fa fa-envelope-o"></i> <a
+                                                href="mailto:example@example.com">example@example.com</a> </li>
+                                        <li> <i class="fa fa-phone"></i> <a href="tel:+123456789">+123 456 (789)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">Usefull Info Links</h2> <i class="icon fa fa-expand"></i>
+                                </div>
+                                <div class="links--widget">
+                                    <ul class="nav">
+                                        <li><a href="#" class="fa-angle-right">Gadgets</a></li>
+                                        <li><a href="#" class="fa-angle-right">Shop</a></li>
+                                        <li><a href="#" class="fa-angle-right">Term and Conditions</a></li>
+                                        <li><a href="#" class="fa-angle-right">Forums</a></li>
+                                        <li><a href="#" class="fa-angle-right">Top News of This Week</a></li>
+                                        <li><a href="#" class="fa-angle-right">Special Recipes</a></li>
+                                        <li><a href="#" class="fa-angle-right">Sign Up</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">Advertisements</h2> <i class="icon fa fa-bullhorn"></i>
+                                </div>
+                                <div class="links--widget">
+                                    <ul class="nav">
+                                        <li><a href="#" class="fa-angle-right">Post an Add</a></li>
+                                        <li><a href="#" class="fa-angle-right">Adds Renew</a></li>
+                                        <li><a href="#" class="fa-angle-right">Price of Advertisements</a></li>
+                                        <li><a href="#" class="fa-angle-right">Adds Closed</a></li>
+                                        <li><a href="#" class="fa-angle-right">Monthly or Yearly</a></li>
+                                        <li><a href="#" class="fa-angle-right">Trial Adds</a></li>
+                                        <li><a href="#" class="fa-angle-right">Add Making</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
+                            <div class="widget">
+                                <div class="widget--title">
+                                    <h2 class="h4">Career</h2> <i class="icon fa fa-user-o"></i>
+                                </div>
+                                <div class="links--widget">
+                                    <ul class="nav">
+                                        <li><a href="#" class="fa-angle-right">Available Post</a></li>
+                                        <li><a href="#" class="fa-angle-right">Career Details</a></li>
+                                        <li><a href="#" class="fa-angle-right">How to Apply?</a></li>
+                                        <li><a href="#" class="fa-angle-right">Freelence Job</a></li>
+                                        <li><a href="#" class="fa-angle-right">Be a Member</a></li>
+                                        <li><a href="#" class="fa-angle-right">Apply Now</a></li>
+                                        <li><a href="#" class="fa-angle-right">Send Your Resume</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer--copyright bg--color-3">
+                <div class="social--bg bg--color-1"></div>
+                <div class="container">
+                    <p class="text float--left">&copy; 2026 <a href="#">UZNEWS</a>. All Rights Reserved.</p>
+                    <ul class="nav social float--right">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fa fa-youtube-play"></i></a></li>
+                    </ul>
+                    <ul class="nav links float--right">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div id="stickySocial" class="sticky--right">
+        <ul class="nav">
+            <li> <a href="#"> <i class="fa fa-facebook"></i> <span>Follow Us On Facebook</span> </a> </li>
+            <li> <a href="#"> <i class="fa fa-twitter"></i> <span>Follow Us On Twitter</span> </a> </li>
+            <li> <a href="#"> <i class="fa fa-google-plus"></i> <span>Follow Us On Google Plus</span> </a> </li>
+            <li> <a href="#"> <i class="fa fa-rss"></i> <span>Follow Us On RSS</span> </a> </li>
+            <li> <a href="#"> <i class="fa fa-vimeo"></i> <span>Follow Us On Vimeo</span> </a> </li>
+            <li> <a href="#"> <i class="fa fa-youtube-play"></i> <span>Follow Us On Youtube Play</span> </a> </li>
+            <li> <a href="#"> <i class="fa fa-linkedin"></i> <span>Follow Us On LinkedIn</span> </a> </li>
+        </ul>
+    </div>
+    <div id="backToTop"> <a href="#"><i class="fa fa-angle-double-up"></i></a> </div>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.sticky.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.marquee.min.js' %}"></script>
+    <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'js/isotope.min.js' %}"></script>
+    <script src="{% static 'js/resizesensor.min.js' %}"></script>
+    <script src="{% static 'js/theia-sticky-sidebar.min.js' %}"></script>
+    <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+    <script src="{% static 'js/jquery.barrating.min.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'js/retina.min.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK9f7sXWmqQ1E-ufRXV3VpXOn_ifKsDuc"></script>
+    <script src="{% static 'js/color-switcher.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

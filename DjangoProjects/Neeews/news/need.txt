@@ -1,0 +1,20 @@
+django fayl ochildi;
+startapp {app_nomi} qilinib settingsda installed appsni ro'yxat oxiriga: {'app_name'} qo'shiladi
+models ga kerakli modellar yozildi
+makemigrations - migrate
+python manage.py createsuperuser admin yaratildi
+admin.py ga modellar ulandi (keraklilari)
+template, media, static <- settingsga yozildi
+templatedagi fayllarga static qo'yilib chiqildi.
+need
+- url
+- color
+- template correction
+- slug slugify
+
+did:
+bash:
+     pip install django-allauth
+      pip install requests
+      pip install PyJWT
+      pip install cryptography
